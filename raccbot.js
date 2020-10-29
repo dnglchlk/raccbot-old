@@ -31,22 +31,23 @@ client.once('ready', () => {
 client.on('message', async message => {
     if (message.author.bot) return;
     let { guild } = message;
+    let { channel } = message;
     const usermsg = message.content.split(' ');
 
     switch (usermsg[0]) {
         case 'racc.ping':
             message.channel.send("Pong.");
-            console.log(`Pinging ${guild}`);
+            console.log(`Pinging ${channel}, ${guild}`);
             break;
         case 'racc.pong':
             message.channel.send("Ping.");
-            console.log(`Ponging ${guild}`);
+            console.log(`Ponging ${channel}, ${guild}`);
             break;
         case 'racc.repeat':
             // Rejoins every slice at spaces after the first slice
             let str = usermsg.slice(1).join(' ');
             var msgSelect = Math.round(Math.random() * (3 - 0) + 1);
-            console.log(`Repeat of message ${usermsg.slice(1).join(' ')} from ${guild}`);
+            console.log(`Repeat of message ${usermsg.slice(1).join(' ')} from ${channel}, ${guild}`);
             switch (msgSelect) {
                 case 1:
                     str = str.replace(/i am/i, "You are");
@@ -89,7 +90,7 @@ client.on('message', async message => {
                 .setTimestamp();
             //console.log(processorCount, processorUsage, memoryTotal, memoryFree, networkUsage, systemUptime)
             message.channel.send(heliosinfEmbed);
-            console.log(`Finished collecting helios system data, sent to ${guild}`)
+            console.log(`Finished collecting helios system data, sent to ${channel}, ${guild}`)
             break;
         default:
             break;
