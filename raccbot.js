@@ -1,4 +1,5 @@
 // you're gonna go to helios and you're GONNA LIKE IT, you hear?
+require('dotenv').config();
 const osu = require('node-os-utils');
 const cpu = osu.cpu;
 const mem = osu.mem;
@@ -6,6 +7,7 @@ const netstat = osu.netstat;
 const os = require('os');
 const Discord = require('discord.js');
 const { cpuUsage } = require('process');
+const { info } = require('console');
 const client = new Discord.Client();
 
 client.on('ready', () => {
@@ -24,7 +26,7 @@ client.once('ready', () => {
 
 client.on('message', message => {
     if (message.author.bot) return;
-    let guildName = Discord.Guild.name;
+    let { guild } = message;
     const usermsg = message.content.split(' ');
 
     switch (usermsg[0]) {
@@ -38,7 +40,7 @@ client.on('message', message => {
             // Rejoins every slice at spaces after the first slice
             let str = usermsg.slice(1).join(' ');
             var msgSelect = Math.round(Math.random() * (3 - 0) + 1);
-            console.log(`Repeat of message ${usermsg.slice(1).join(' ')} from ${guildName}`);
+            console.log(`Repeat of message ${usermsg.slice(1).join(' ')} from ${guild}`);
             switch (msgSelect) {
                 case 1:
                     str = str.replace(/i am/i, "You are");
@@ -71,13 +73,13 @@ client.on('message', message => {
                     networkUsage = `${info}`
                     console.log(info)
                 })
-            processorUsage = cpu.usage().then;
+            processorUsage = `${cpu.usage().then(info)}%`;
             // add embed with os.cpu/mem info
             const heliosinfEmbed = new Discord.MessageEmbed()
                 .setColor('#900C3F')
                 .setTitle('Helios Server Info')
                 .setURL('https://chalkland.net/')
-                .setAuthor('Helios, the Creator', 'https://i.pinimg.com/originals/8f/d7/9f/8fd79f40c98408cc41eaf338401089c7.jpg', 'https://chalkland.net')
+                .setAuthor('Helios, the Creator', 'https://chalkland.net/Pictures/helios.jpg', 'https://chalkland.net')
                 .setDescription('various current helios system statistics')
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
@@ -100,4 +102,4 @@ client.on('message', message => {
 });
 
 
-client.login('NjU0ODY1NjYxNjkxOTUzMTYz.XfLxLA.x-grbpZAzaXdO1tHwLMzXX5zeKI');
+client.login(process.env.BOT_TOKEN);
