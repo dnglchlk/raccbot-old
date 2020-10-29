@@ -103,7 +103,7 @@ client.on('message', async message => {
             break;
         case 'racc.help':
             message.channel.startTyping();
-            message.channel.send();
+            message.channel.send("Find Help Here: https://chalkland.net/raccbot/help.html");
             message.channel.stopTyping();
             break;
         default:
