@@ -1,0 +1,12 @@
+{
+  "name": "dngl-raccbot",
+  "version": "1.0.0",
+  "description": "bot for dnglchlk as a personal project",
+  "main": "raccbot.js",
+  "author": "dngl",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "node-os-utils": "^1.3.2"
+  }
+}
