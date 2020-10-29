@@ -1,4 +1,5 @@
 // you're gonna go to helios and you're GONNA LIKE IT, you hear?
+require('log-timestamp')('#raccbot');
 require('dotenv').config();
 const osu = require('node-os-utils');
 const cpu = osu.cpu;
@@ -18,13 +19,16 @@ client.on('ready', () => {
             type: "COMPETING",
         }
     });
+    setInterval(aliveTimer, 900000);
+
+    function aliveTimer() { console.log("raccbot is still alive, carry on."); }
 });
 
 client.once('ready', () => {
-    console.log('Ready!');
+    console.log('raccbot is ready to steal your trash now 🦝');
 });
 
-client.on('message', message => {
+client.on('message', async message => {
     if (message.author.bot) return;
     let { guild } = message;
     const usermsg = message.content.split(' ');
@@ -32,9 +36,11 @@ client.on('message', message => {
     switch (usermsg[0]) {
         case 'racc.ping':
             message.channel.send("Pong.");
+            console.log(`Pinging ${guild}`);
             break;
         case 'racc.pong':
             message.channel.send("Ping.");
+            console.log(`Ponging ${guild}`);
             break;
         case 'racc.repeat':
             // Rejoins every slice at spaces after the first slice
@@ -57,44 +63,33 @@ client.on('message', message => {
             message.channel.send(str);
             break;
         case 'racc.helios':
+            console.log("Sending Helios Server Data...");
             let processorCount = cpu.count();
-            let processorUsage = "N/A";
-            let memoryTotal = `${Math.round((mem.totalMem() / 1024 / 1024) * 1.049)} MiB`;
-            let memoryFree = `${Math.round(os.freemem() / 1048576)} MiB`;
-            let networkUsage = 0;
+            let memoryTotal = `${Math.round(mem.totalMem() / 1024 / 1024)} MB`;
             let systemUptime = `${Math.round(os.uptime() / 3600)} Hours`;
-            cpu.usage()
-                .then(info => {
-                    processorUsage = `${info}%`;
-                    console.log(info);
-                })
-            netstat.inOut()
-                .then(info => {
-                    networkUsage = `${info}`
-                    console.log(info)
-                })
-            processorUsage = `${cpu.usage().then(info)}%`;
-            // add embed with os.cpu/mem info
+            cpu.usage().then(info => {/*console.log(info);*/ })
+            netstat.inOut().then(info => {/*console.log(info.eno2.outputMb, info.eno2.inputMb)*/ })
+            mem.free().then(info => { })
             const heliosinfEmbed = new Discord.MessageEmbed()
                 .setColor('#900C3F')
                 .setTitle('Helios Server Info')
                 .setURL('https://chalkland.net/')
                 .setAuthor('Helios, the Creator', 'https://chalkland.net/Pictures/helios.jpg', 'https://chalkland.net')
                 .setDescription('various current helios system statistics')
-                //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
-                    { name: 'Physical CPU Count:', value: processorCount, inline: true },
-                    { name: 'CPU Usage:', value: processorUsage, inline: true },
+                    { name: 'Physical CPU Count:', value: `${processorCount} across 2 Cores`, inline: true },
+                    { name: 'CPU Usage:', value: `${await cpu.usage()}%`, inline: true },
                     { name: '\u200B', value: '\u200B' },
                     { name: 'Total Memory:', value: memoryTotal, inline: true },
-                    { name: 'Free Memory:', value: memoryFree, inline: true },
+                    { name: 'Free Memory:', value: `${(await mem.free()).freeMemMb} MB`, inline: true },
                     { name: '\u200B', value: '\u200B' },
-                    { name: 'Network Usage:', value: networkUsage, inline: true },
+                    { name: 'Network Usage:', value: `${(((await netstat.inOut()).total.outputMb) + ((await netstat.inOut()).total.inputMb)) * 1024} KB/s`, inline: true },
                     { name: 'System Uptime:', value: systemUptime, inline: true },
                 )
                 .setTimestamp();
-            console.log(processorCount, processorUsage, memoryTotal, memoryFree, networkUsage, systemUptime)
+            //console.log(processorCount, processorUsage, memoryTotal, memoryFree, networkUsage, systemUptime)
             message.channel.send(heliosinfEmbed);
+            console.log(`Finished collecting helios system data, sent to ${guild}`)
             break;
         default:
             break;
