@@ -30,24 +30,32 @@ client.once('ready', () => {
 
 client.on('message', async message => {
     if (message.author.bot) return;
-    let { guild } = message;
-    let { channel } = message;
+    let { guild, channel } = message;
+    let msgavatarurl = message.member.user.avatarURL;
     const usermsg = message.content.split(' ');
 
     switch (usermsg[0]) {
         case 'racc.ping':
+            message.channel.startTyping();
             message.channel.send("Pong.");
             console.log(`Pinging ${channel}, ${guild}`);
+            message.channel.stopTyping();
             break;
         case 'racc.pong':
+            message.channel.startTyping();
             message.channel.send("Ping.");
             console.log(`Ponging ${channel}, ${guild}`);
+            message.channel.stopTyping();
             break;
         case 'racc.repeat':
             // Rejoins every slice at spaces after the first slice
             let str = usermsg.slice(1).join(' ');
+            message.channel.startTyping();
             var msgSelect = Math.round(Math.random() * (3 - 0) + 1);
-            console.log(`Repeat of message ${usermsg.slice(1).join(' ')} from ${channel}, ${guild}`);
+            console.log(`Repeat of ${message.member.user.tag} message ${usermsg.slice(1).join(' ')} from ${channel}, ${guild}`);
+            if ((message.member.user.id).toString() != "575763130743914496") {
+                str = str.replace(/erick is/i, `${message.member.user.tag} is`);
+            }
             switch (msgSelect) {
                 case 1:
                     str = str.replace(/i am/i, "You are");
@@ -62,15 +70,14 @@ client.on('message', async message => {
                     break;
             }
             message.channel.send(str);
+            message.channel.stopTyping();
             break;
         case 'racc.helios':
+            message.channel.startTyping();
             console.log("Sending Helios Server Data...");
             let processorCount = cpu.count();
             let memoryTotal = `${Math.round(mem.totalMem() / 1024 / 1024)} MB`;
             let systemUptime = `${Math.round(os.uptime() / 3600)} Hours`;
-            cpu.usage().then(info => {/*console.log(info);*/ })
-            netstat.inOut().then(info => {/*console.log(info.eno2.outputMb, info.eno2.inputMb)*/ })
-            mem.free().then(info => { })
             const heliosinfEmbed = new Discord.MessageEmbed()
                 .setColor('#900C3F')
                 .setTitle('Helios Server Info')
@@ -78,7 +85,7 @@ client.on('message', async message => {
                 .setAuthor('Helios, the Creator', 'https://chalkland.net/Pictures/helios.jpg', 'https://chalkland.net')
                 .setDescription('various current helios system statistics')
                 .addFields(
-                    { name: 'Physical CPU Count:', value: `${processorCount} across 2 Cores`, inline: true },
+                    { name: 'Physical CPU Count:', value: `${processorCount} across 2 Chips`, inline: true },
                     { name: 'CPU Usage:', value: `${await cpu.usage()}%`, inline: true },
                     { name: '\u200B', value: '\u200B' },
                     { name: 'Total Memory:', value: memoryTotal, inline: true },
@@ -87,10 +94,17 @@ client.on('message', async message => {
                     { name: 'Network Usage:', value: `${(((await netstat.inOut()).total.outputMb) + ((await netstat.inOut()).total.inputMb)) * 1024} KB/s`, inline: true },
                     { name: 'System Uptime:', value: systemUptime, inline: true },
                 )
+                .setFooter(`Requested by ${message.member.user.tag}`, msgavatarurl)
                 .setTimestamp();
             //console.log(processorCount, processorUsage, memoryTotal, memoryFree, networkUsage, systemUptime)
             message.channel.send(heliosinfEmbed);
+            message.channel.stopTyping();
             console.log(`Finished collecting helios system data, sent to ${channel}, ${guild}`)
+            break;
+        case 'racc.help':
+            message.channel.startTyping();
+            message.channel.send();
+            message.channel.stopTyping();
             break;
         default:
             break;
