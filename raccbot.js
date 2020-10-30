@@ -8,7 +8,7 @@ const netstat = osu.netstat;
 const os = require('os');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const raccArr = ['raccoon', 'racc', 'raccbot', 'trash', 'trash panda', 'egg', 'eggs', 'ĕğğ', 'dnglchlk', 'erick', 'Erick', 'ĔĞĞ', 'procyon', 'procyon lotor', 'helios'];
+const raccArr = ['raccoon', 'raccbot', 'trash', 'trash panda', 'egg', 'eggs', 'ĕğğ', 'dnglchlk', 'erick', 'Erick', 'ĔĞĞ', 'procyon', 'procyon lotor', 'helios'];
 
 client.on('ready', () => {
     client.user.setStatus('available')
@@ -58,7 +58,7 @@ client.on('message', async message => {
     const raccEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'raccmask');
     async function raccMessage() {
         for (let i = 0; i < raccArr.length; i++) {
-            if (message.content.includes(raccArr[i]) === true) {
+            if (message.content.includes(raccArr[i]) === true && guild.id != '654872349090250753') {
                 try {
                     await message.react(raccEmoji);
                     console.log(`did somebody say ${raccArr[i]}?`);
