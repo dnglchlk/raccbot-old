@@ -6,9 +6,14 @@ const cpu = osu.cpu;
 const mem = osu.mem;
 const netstat = osu.netstat;
 const os = require('os');
+const mcStatus = require('minecraft-server-status');
 const Discord = require('discord.js');
+const { prototype } = require('stream');
+const nodeduck = require('node-duckduckgo');
+const { url } = require('inspector');
 const client = new Discord.Client();
 const raccArr = ['raccoon', 'raccbot', 'trash', 'trash panda', 'egg', 'eggs', 'ĕğğ', 'dnglchlk', 'erick', 'Erick', 'ĔĞĞ', 'procyon', 'procyon lotor', 'helios'];
+const broadcastAlive = false;
 
 client.on('ready', () => {
     client.user.setStatus('available')
@@ -45,7 +50,8 @@ client.on("guildBanAdd", function (guild, user) {
     if (guild.id === '696540783385247824') {
         const channel = guild.channels.cache.find(ch => ch.name === 'non-amet');
         channel.startTyping();
-        channel.send(`${user} was just **banned** from ${guild} :eyes:`);
+        channel.send(`${user} was just **banned** from ${guild} 👀`);
+        console.log(`${user} was just **banned** from ${guild} 👀`);
         channel.stopTyping();
     }
 });
@@ -89,6 +95,7 @@ client.on('message', async message => {
             break;
         case 'racc.repeat':
         case 'racc.repeat.twice':
+            // add integer based repeating
             let str = usermsg.slice(1).join(' ');
             message.channel.startTyping();
             var msgSelect = Math.round(Math.random() * (3 - 0) + 1);
@@ -153,6 +160,57 @@ client.on('message', async message => {
             message.channel.send("Find Help Here: https://chalkland.net/raccbot/help.html");
             console.log(`Help page sent to ${channel}, ${guild}`);
             message.channel.stopTyping();
+            break;
+        case 'racc.minecraft.query':
+            message.channel.startTyping();
+            let mcPort = 25565;
+            if (usermsg[2] != '' || usermsg[2] != null) { mcPort = usermsg[2]; }
+            mcStatus(usermsg[1], mcPort, response => {
+                console.log(response);
+                message.channel.send(`${response.toString()}`);
+            })
+            message.channel.send('This command is not done yet, sorry for any inconvenience');
+            console.log(`Query sent to ${channel}, ${guild}`);
+            message.channel.stopTyping();
+            break;
+        case 'racc.duck.search':
+        case 'racc.search':
+            let searchstr = usermsg.slice(1).join(' ');
+            async function get() {
+                try {
+                    const duckSearch = await nodeduck.duckIt(searchstr);
+                    if (duckSearch.data.Image !== url) {
+                        // append https://duckduckgo.com to front of dS.data.Image?
+                        duckSearch.data.Image = 'https://chalkland.net/Pictures/FFFFFF-0.png';
+                    }
+                    console.log(`Image URL: ${duckSearch.data.Image}`);
+                    const duckduckgoEmbed = new Discord.MessageEmbed()
+                        .setColor('#900C3F')
+                        .setTitle(`Instant Answer For: ${searchstr}`)
+                        .setURL(duckSearch.data.AbstractURL)
+                        .setAuthor('DuckDuckGo', 'https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png', 'https://duckduckgo.com')
+                        .setDescription('retrieved by RaccBot')
+                        .setImage(duckSearch.data.Image)
+                        .addFields(
+                            { name: 'Answer', value: duckSearch.data.AbstractText, inline: false },
+                            // { name: 'CPU Usage:', value: `${await cpu.usage()}%`, inline: true },
+                            // { name: '\u200B', value: '\u200B' },
+                            // { name: 'Total Memory:', value: memoryTotal, inline: true },
+                            // { name: 'Free Memory:', value: `${(await mem.free()).freeMemMb} MB`, inline: true },
+                            // { name: '\u200B', value: '\u200B' },
+                            // { name: 'Network Usage:', value: `${(((await netstat.inOut()).total.outputMb) + ((await netstat.inOut()).total.inputMb)) * 1024} KB/s`, inline: true },
+                            // { name: 'System Uptime:', value: systemUptime, inline: true },
+                        )
+                        .setFooter(`Requested by ${message.member.user.tag}`, msgavatarurl)
+                        .setTimestamp();
+                    console.log(`sent to ${channel}, ${guild}`);
+                    message.channel.send(duckduckgoEmbed);
+                } catch (err) {
+                    console.error('the duck has declared an error war against your raccoon!', err);
+                    message.channel.send(`Could not retrieve or find an Instant Answer for: ${searchstr}`);
+                }
+            }
+            get();
             break;
         default:
             break;
