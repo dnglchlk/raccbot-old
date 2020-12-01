@@ -8,6 +8,7 @@
   "dependencies": {
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
+    "jsonfile": "^6.1.0",
     "log-timestamp": "^0.3.0",
     "minecraft-server-status": "^1.0.1",
     "node-duckduckgo": "^2.0.12",

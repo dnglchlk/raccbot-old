@@ -167,7 +167,7 @@ client.on('message', async message => {
             if (usermsg[2] != '' || usermsg[2] != null) { mcPort = usermsg[2]; }
             mcStatus(usermsg[1], mcPort, response => {
                 console.log(response);
-                message.channel.send(`${response.toString()}`);
+                message.channel.send(response);
             })
             message.channel.send('This command is not done yet, sorry for any inconvenience');
             console.log(`Query sent to ${channel}, ${guild}`);
@@ -179,9 +179,11 @@ client.on('message', async message => {
             async function get() {
                 try {
                     const duckSearch = await nodeduck.duckIt(searchstr);
+                    console.log(duckSearch.data.Image);
                     if (duckSearch.data.Image !== url) {
-                        // append https://duckduckgo.com to front of dS.data.Image?
-                        duckSearch.data.Image = 'https://chalkland.net/Pictures/FFFFFF-0.png';
+                        oldUrl = duckSearch.data.Image;
+                        duckSearch.data.Image = `https://duckduckgo.com${oldUrl}`;
+                        // duckSearch.data.Image = 'https://chalkland.net/Pictures/FFFFFF-0.png';
                     }
                     console.log(`Image URL: ${duckSearch.data.Image}`);
                     const duckduckgoEmbed = new Discord.MessageEmbed()
