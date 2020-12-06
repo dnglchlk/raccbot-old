@@ -1,7 +1,9 @@
 // you're gonna go to helios and you're GONNA LIKE IT, you hear?
+const readline = require('readline');
 require('log-timestamp')('#raccbot');
 require('dotenv').config();
 const osu = require('node-os-utils');
+const fs = require('fs');
 const cpu = osu.cpu;
 const mem = osu.mem;
 const netstat = osu.netstat;
@@ -11,10 +13,25 @@ const Discord = require('discord.js');
 const { prototype } = require('stream');
 const nodeduck = require('node-duckduckgo');
 const { url } = require('inspector');
+const { writeFile, write } = require('fs');
 const client = new Discord.Client();
 const raccArr = ['raccoon', 'raccbot', 'trash', 'trash panda', 'egg', 'eggs', 'ĕğğ', 'dnglchlk', 'erick', 'Erick', 'ĔĞĞ', 'procyon', 'procyon lotor', 'helios'];
 const broadcastAlive = false;
 
+// for reading key inputs
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+
+process.stdin.on('keypress', (str, key) => {
+    if (key.name === 'q') {
+        console.warn("Exiting raccbot!");
+        console.log("see ya! 🦝");
+        process.exit();
+    }
+});
+
+
+// the actual raccbot
 client.on('ready', () => {
     client.user.setStatus('available')
     client.user.setPresence({
@@ -62,7 +79,7 @@ client.once('ready', () => {
 
 client.on('message', async message => {
     const raccEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'raccmask');
-    async function raccMessage() {
+    async function raccOnMessage() {
         for (let i = 0; i < raccArr.length; i++) {
             if (message.content.includes(raccArr[i]) === true && guild.id != '654872349090250753') {
                 try {
@@ -78,7 +95,7 @@ client.on('message', async message => {
     let { guild, channel } = message;
     let msgavatarurl = message.member.user.avatarURL;
     const usermsg = message.content.split(' ');
-    raccMessage();
+    raccOnMessage();
 
     switch (usermsg[0]) {
         case 'racc.ping':
@@ -213,6 +230,38 @@ client.on('message', async message => {
                 }
             }
             get();
+            break;
+        case 'racc.down.start':
+        case 'racc.down':
+            const sessionLeader = { leader: `${message.author.id}` };
+            const obj = { name: `${message.author.id}` };
+            let fileName = (`${usermsg[1]}`);
+            let guildName = [`${message.guild.id}`]
+            if (usermsg[0] === 'racc.down.start') {
+                if (typeof usermsg[1] === 'string') {
+                    writeFile(`/data/${guildName}/${fileName}.json`, obj)
+                        .then(res => {
+                            console.log(`Write of userID ${message.author.id} /data/${guildName}/${fileName}.json complete.`)
+                        })
+                        .catch(error => console.error(error, `Error Writing to ${fileName}.json, contents may not have been written correctly.`))
+                    writeFile(`/data/${guildName}/${fileName}.json`, sessionLeader)
+                        .then(res => {
+                            console.log(`Write of sessionLeader ${sessionLeader} to /data/${guildName}/${fileName}.json complete.`)
+                        })
+                        .catch(error => console.error(error, `Error Writing to ${fileName}.json, contents may not have been written correctly.`))
+                }
+            }
+            let uID = message.author.id;
+            let uNAME = message.author.username;
+            if (fs.statSync(`/data/${guildName}/${usermsg[1]}.json`).isFile == true) {
+                writeFile(`/data/${guildName}/${fileName}.json`, obj)
+                    .then(res => {
+                        console.log(`Write of userID ${message.author.id} /data/${guildName}/${fileName}.json complete.`)
+                        message.channel.send(`<@${uID}>, you've been signed up for `)
+                        console.log(`${uNAME} is down for session ${usermsg[1]}!`)
+                    })
+                    .catch(error => console.error(error, `Error Writing to ${fileName}.json, contents may not have been written correctly.`))
+            }
             break;
         default:
             break;
