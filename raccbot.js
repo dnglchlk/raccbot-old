@@ -21,7 +21,9 @@ const broadcastAlive = false;
 
 // for reading key inputs
 readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
+if (process.stdin.isTTY) {
+    process.stdin.setRawMode(true);
+}
 
 process.stdin.on('keypress', (str, key) => {
     switch (key.name) {
