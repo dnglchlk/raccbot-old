@@ -1,6 +1,6 @@
 {
   "name": "@dnglchlk/dngl-raccbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "bot for dnglchlk as a personal project",
   "main": "raccbot.js",
   "author": "dngl",
