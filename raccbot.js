@@ -1,11 +1,11 @@
 // you're gonna go to helios and you're GONNA LIKE IT, you hear?
-const readline = require('readline');
 require('log-timestamp')('#raccbot');
 require('dotenv').config();
+require('colors');
+const readline = require('readline');
 const osu = require('node-os-utils');
 const fs = require('fs');
 const cpu = osu.cpu;
-const colors = require('colors');
 const mem = osu.mem;
 const netstat = osu.netstat;
 const os = require('os');
