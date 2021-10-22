@@ -1,21 +1,22 @@
-# The Fuck Around and Find Out License, version 0.2
+# faaglr (fuck around and get licence revoked) v1 by dnglchlk, based off fafol 0.2 by boringcactus
 
-copyright (c) 2020 Erick Tonroy
+copyright (c) 2020-21 Erick Tonroy / dnglchlk
 
 ## Purpose
 
 This license gives everyone as much permission to work with
-this software as possible, while protecting contributors
-from liability, and ensuring this software is used
-ethically.
+this software as possible, while giving contributors
+immunity from liability, and allowing them control over their
+work, while ensuring this software is used ethically.
 
 ## Acceptance
 
-In order to receive this license, you must agree to its
-rules.  The rules of this license are both obligations
-under that agreement and conditions to your license.
-You must not do anything with this software that triggers
-a rule that you cannot or will not follow.
+By using, "cloning", copying, modifying or duplicating
+this software in any form, you are agreeing to the rules
+outlined within the license. The rules of this license are
+both obligations under that agreement and conditions to your
+license. You must not do anything with this software that 
+triggers a rule that you cannot or will not follow.
 
 ## Copyright
 
@@ -33,7 +34,7 @@ determined by the primary contributors to the software.
 If anyone notifies you in writing that you have not
 complied with [Ethics], you can keep your
 license by taking all practical steps to comply within 30
-days after the notice.  If you do not do so, your license
+days after the notice. If you do not do so, your license
 ends immediately.
 
 ## Patent
@@ -42,13 +43,22 @@ Each contributor licenses you to do everything with this
 software that would otherwise infringe any patent claims
 they can license or become able to license.
 
-## Reliability
+## Contributor Rights
 
-No contributor can revoke this license.
+Contributors are reserved the right to revoke license for
+your use of this program given "good" reason, "good" being
+determined by the contributor.
+
+## Compliance
+
+You will be required to comply, effective
+immediately with demands and cease any and all use of provided
+software once notice your license has been revoked has been
+recieved.
 
 ## No Liability
 
-***As far as the law allows, this software comes as is,
+**_As far as the law allows, this software comes as is,
 without any warranty or condition, and no contributor
 will be liable to anyone for any damages related to this
-software or this license, under any kind of legal claim.***
+software or this license, under any kind of legal claim._**
