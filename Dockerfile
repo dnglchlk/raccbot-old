@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:17.0.0
 
 RUN mkdir -p /usr/src/bot
 WORKDIR /usr/src/bot
