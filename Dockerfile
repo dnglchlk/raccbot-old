@@ -8,4 +8,4 @@ RUN npm install
 
 COPY . /usr/src/bot
 
-CMD ["node", "raccbot.js"]
+CMD ["npm", "start"]
