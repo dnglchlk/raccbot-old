@@ -1,4 +1,4 @@
-// you're gonna go to helios and you're GONNA LIKE IT, you hear?
+// he actually went to helios and liked it :)
 require('dotenv').config();
 const readline = require('readline');
 const osu = require('node-os-utils');
@@ -51,6 +51,7 @@ process.stdin.on('keypress', (str, key) => {
 // the actual raccbot
 client.on('ready', () => {
     logger.info('raccbot is READY to steal your trash now');
+    logger.info('press Q to exit, press A to check for hang');
     client.user.setStatus('online');
     statusChange();
     setInterval(statusChange, 60000);
@@ -64,30 +65,77 @@ client.on('ready', () => {
 });
 // check for chalkland member join, still works as of 10/15/2021
 client.on('guildMemberAdd', member => {
-    // Send the message to a designated channel on a server
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'non-amet');
-    // Do nothing if the channel wasn't found on this server
-    if (!channel) return;
-    // Send the message, mentioning the member
-    channel.send(`Welcome to the server, ${member}`);
+    if (guild.id === '696540783385247824') {
+        try {
+            const channel = guild.channels.cache.find(ch => ch.name === 'non-amet');
+            channel.sendTyping();
+            channel.send(`Welcome to Chalkland, ${member}!`);
+        } catch (error) {
+            logger.warn(error);
+        }
+    } 
+    if (guild.id === '754471441575182431') {
+        try {
+            const channel = guild.channels.cache.find(ch => ch.name === 'general');
+            channel.sendTyping();
+            channel.send(`Welcome to The Fun Haus, ${member}!`);
+        } catch (error) {
+            logger.warn(error);
+        }
+    } else {
+        logger.warn(`Guild messages not set up for Guild: ${member.guild.name}!`)
+    }
+    channel.warn(`${member} has joined ${member.guild.name}!`);
 });
 
 client.on('guildMemberRemove', member => {
-    // Send the message to a designated channel on a server:
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'non-amet');
-    // Do nothing if the channel wasn't found on this server
-    if (!channel) return;
-    // Send the message, referencing the member
-    channel.warn(`${member} has left Chalkland`);
+    if (guild.id === '696540783385247824') {
+        try {
+            const channel = guild.channels.cache.find(ch => ch.name === 'non-amet');
+            channel.sendTyping();
+            channel.send(`${member} has left the server.`);
+        } catch (error) {
+            logger.warn(error);
+        }
+    } 
+    if (guild.id === '754471441575182431') {
+        try {
+            const channel = guild.channels.cache.find(ch => ch.name === 'general');
+            channel.sendTyping();
+            channel.send(`${member} has left the server.`);
+        } catch (error) {
+            logger.warn(error);
+        }
+    } else {
+        logger.warn(`Guild messages not set up for Guild: ${member.guild.name}!`)
+    }
+    channel.warn(`${member} has left ${member.guild.name}`);
 });
 
 client.on("guildBanAdd", function (guild, user) {
     if (guild.id === '696540783385247824') {
-        const channel = guild.channels.cache.find(ch => ch.name === 'non-amet');
-        channel.sendTyping();
-        channel.send(`${user} was just **banned** from ${guild} 👀`);
-        logger.warn(`${user} was just **banned** from ${guild}`);
+        try {
+            const channel = guild.channels.cache.find(ch => ch.name === 'non-amet');
+            channel.sendTyping();
+            channel.send(`${user} was just **banned** from ${guild.name} 👀`);
+            logger.warn(`${user} was just **banned** from ${guild.name}`);
+        } catch (error) {
+            logger.warn(error);
+        }
+    } 
+    if (guild.id === '754471441575182431') {
+        try {
+            const channel = guild.channels.cache.find(ch => ch.name === 'general');
+            channel.sendTyping();
+            channel.send(`${user} was just **banned** from ${guild.name} 👀`);
+            logger.warn(`${user} was just **banned** from ${guild.name}`);
+        } catch (error) {
+            logger.warn(error);
+        }
+    } else {
+        logger.warn(`Guild messages not set up for Guild: ${guild.name}!`)
     }
+
 });
 
 client.on('messageCreate', async message => {
@@ -191,7 +239,7 @@ client.on('messageCreate', async message => {
                     .setImage("https://cdn.discordapp.com/app-icons/654865661691953163/0b25d03eaffd05ff289a9c956b2a5f6e.png")
                     .setDescription(`Currently running \`v${packageJSON.version}\`, using ${depNum} dependencies in mode \`${process.env.DEV_MODE}\``)
                     .addFields(
-                        { name: "​", value: `Currently running on platform \`${process.platform}\` with ${process.arch} architecture.`, inline: false },
+                        { name: "​", value: `Currently running on platform \`${process.platform}-${process.arch}\``, inline: false },
                         { name: "​", value: "Use `racc.help` for a list of commands!", inline: false },
                         { name: "​", value: "Open an issue at https://github.com/raccbot/issues if you encounter any behavior you suspect isn't correct.", inline: false },
                         { name: "​", value: "made by <@295075692620546048> with ❤️, 🧂, and a lot of 🦝", inline: false }
