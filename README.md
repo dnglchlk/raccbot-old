@@ -1,4 +1,5 @@
 # raccbot
+# NOTICE: THIS VERSION OF RACCBOT HAS BEEN ABANDONED, USE AT OWN RISK
 
 This is a simple playful discord bot that was created for use in personal servers that I created.
 It's the first proper foray into the NodeJS universe and I'm proud of the work that I've done with it, it's helped me understand how to work with libraries and overall generally improving my abilities. I hope to maintain the development of raccbot as long as I decide to run servers, and at some point I may decide to release him into a public bot form that other people can invite to their servers. As of right now it's very tailored to my needs and I (dnglchlk) will eventually work towards making it more configurable and open for everyone else to use.
